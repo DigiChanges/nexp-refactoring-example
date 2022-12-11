@@ -7,9 +7,10 @@ class ItemService
         return Item.findOne({ _id: payload.id });
     }
 
-    async list()
+    async list(payload)
     {
-        return Item.find();
+        const { skip, limit } = payload;
+        return (skip && limit) ? Item.find().skip(skip).limit(limit) : [];
     }
 
     async save(payload)

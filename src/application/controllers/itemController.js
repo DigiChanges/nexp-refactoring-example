@@ -1,6 +1,6 @@
 const {validatorRequest } = require("../../helpers/validatorRequest");
 const { ItemService} = require("../../domain/services/ItemService");
-const {StatusCode } = require("../../helpers/statusCode");
+const { StatusCode } = require("../../helpers/statusCode");
 
 async function save(ctx)
 {
@@ -18,6 +18,8 @@ async function save(ctx)
 
 async function list(ctx)
 {
+    await validatorRequest('ItemListValidationSchema', ctx.params);
+
     const service = new ItemService();
     const data = await service.list(ctx.request.body);
 

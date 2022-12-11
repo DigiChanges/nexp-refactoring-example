@@ -7,6 +7,7 @@ const { errorHandler } = require('./helpers/errorHandler');
 
 const { loggerMiddleware} = require('./helpers/middlewares/loggerMiddleware');
 const {ItemRouter } = require("./presentation/routes/ItemRoute");
+const {authHandler} = require("./helpers/middlewares/authHandler");
 
 class App
 {
@@ -31,6 +32,7 @@ class App
 
         // Generic error handling middleware.
         this.app.use(errorHandler);
+        this.app.use(authHandler);
         this.app.use(loggerMiddleware);
     }
 

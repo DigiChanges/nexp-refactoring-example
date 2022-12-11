@@ -29,11 +29,10 @@ We can run the project directly with docker compose and then bash where the basi
 
 ```mermaid
 graph TB
-    subgraph Command & Conquer
-        A[Input] --> B(Command) 
-        A --> C(HTTP Api Rest)
-        C -->|Handle| D[Use Case]
-        B -->|Handle| D
+    subgraph Layer Architecture
+        A(Presentation) --- B(Application) 
+        B --- C(Domain)
+        C --- D(Persistence)
     end
 ```
 

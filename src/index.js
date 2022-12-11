@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const {schemasValidations} = require("./schemasValidations");
+const {schemasValidations} = require("./presentation/schemasValidations");
 const mongoose = require('mongoose');
 const { App } = require('./app');
 const { register } = require('./helpers/validatorRequest');

@@ -1,6 +1,6 @@
-const {validatorRequest } = require("../helpers/validatorRequest");
-const { ItemService} = require("../services/ItemService");
-const {StatusCode } = require("../helpers/statusCode");
+const {validatorRequest } = require("../../helpers/validatorRequest");
+const { ItemService} = require("../../domain/services/ItemService");
+const {StatusCode } = require("../../helpers/statusCode");
 
 async function save(ctx)
 {

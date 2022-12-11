@@ -6,7 +6,7 @@ const bodyParser = require('koa-bodyparser');
 const { errorHandler } = require('./helpers/errorHandler');
 
 const { loggerMiddleware} = require('./helpers/middlewares/loggerMiddleware');
-const {ItemRouter } = require("./routes/ItemRoute");
+const {ItemRouter } = require("./presentation/routes/ItemRoute");
 
 class App
 {

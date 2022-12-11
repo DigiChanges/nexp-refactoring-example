@@ -1,4 +1,4 @@
-const Item = require('./../models/itemSchema');
+const Item = require('../../persistence/models/itemSchema');
 
 class ItemService
 {

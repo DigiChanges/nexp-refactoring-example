@@ -25,6 +25,18 @@ We can run the project directly with docker compose and then bash where the basi
 3. Then execute `pnpm dev` to execute nodeJS program and up Koa Server.
 4. This repository use mongoose therefore they should have the database installed to run it.
 
+## Architecture
+
+```mermaid
+graph TB
+    subgraph Command & Conquer
+        A[Input] --> B(Command) 
+        A --> C(HTTP Api Rest)
+        C -->|Handle| D[Use Case]
+        B -->|Handle| D
+    end
+```
+
 ## License
 
 **NExp** is [MIT licensed](LICENSE).

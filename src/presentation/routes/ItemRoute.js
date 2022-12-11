@@ -1,5 +1,5 @@
 const Router = require("koa-router");
-const { save,getOne, list, update, remove} = require("../controllers/itemController");
+const { save,getOne, list, update, remove} = require("../../application/controllers/itemController");
 
 const routerOpts = {
     prefix: "/api/items"

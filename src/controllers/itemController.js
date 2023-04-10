@@ -1,5 +1,4 @@
 const { ItemService} = require("../services/ItemService");
-const {next} = require("lodash/seq");
 
 async function save(req, res, next)
 {
@@ -61,7 +60,7 @@ async function update(req, res, next)
     }
 }
 
-async function remove(req, res)
+async function remove(req, res, next)
 {
     try
     {

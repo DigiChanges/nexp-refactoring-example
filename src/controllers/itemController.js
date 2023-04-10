@@ -1,7 +1,6 @@
-const { ItemService} = require("../services/ItemService");
-const {next} = require("lodash/seq");
+import ItemService from '../services/ItemService.js';
 
-async function save(req, res, next)
+export async function save(req, res, next)
 {
     try
     {
@@ -16,7 +15,7 @@ async function save(req, res, next)
     }
 }
 
-async function list(req, res, next)
+export async function list(req, res, next)
 {
    try
     {
@@ -31,7 +30,7 @@ async function list(req, res, next)
     }
 }
 
-async function getOne(req, res, next)
+export async function getOne(req, res, next)
 {
     try
     {
@@ -46,7 +45,7 @@ async function getOne(req, res, next)
     }
 }
 
-async function update(req, res, next)
+export async function update(req, res, next)
 {
     try
     {
@@ -61,25 +60,17 @@ async function update(req, res, next)
     }
 }
 
-async function remove(req, res)
+export async function remove(req, res, next)
 {
     try
     {
         const service = new ItemService();
         const data = await service.delete(req.params);
 
-        res.status(200).json({data});
+        res.status(200).json({ data });
     }
     catch (e)
     {
         next(e);
     }
-}
-
-module.exports = {
-      save,
-      list,
-      getOne,
-      update,
-      remove
 }

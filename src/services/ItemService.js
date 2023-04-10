@@ -1,4 +1,4 @@
-const Item = require('../models/itemSchema');
+import Item from '../models/itemSchema.js';
 
 class ItemService
 {
@@ -18,18 +18,18 @@ class ItemService
         const item = new Item();
         item.name = payload.name;
         item.type = payload.type;
-        await item.save()
+        await item.save();
 
         return item;
     }
 
     async update(payload)
     {
-        const item = await Item.findOne({ _id: payload.id })
+        const item = await Item.findOne({ _id: payload.id });
 
         item.name = payload?.name ?? item.name;
         item.type = payload?.type ?? item.type;
-        await item.save()
+        await item.save();
 
         return item;
     }
@@ -40,6 +40,4 @@ class ItemService
     }
 }
 
-module.exports = {
-  ItemService
-}
+export default ItemService;

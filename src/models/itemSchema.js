@@ -1,10 +1,12 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
 const ItemModelSchema = new Schema({
   name: Schema.Types.String,
-  type: Schema.Types.Number,
+  type: Schema.Types.Number
 });
 
-module.exports = mongoose.model("Item", ItemModelSchema);
+const Item = mongoose.model('Item', ItemModelSchema);
+
+export default Item;

@@ -1,23 +1,33 @@
 require('dotenv').config();
 
-const {schemasValidations} = require("./presentation/schemasValidations");
+const compression = require("compression");
+const express = require("express");
+const helmet = require("helmet");
 const mongoose = require('mongoose');
-const { App } = require('./app');
-const { register } = require('./helpers/validatorRequest');
+const cors = require('cors');
+const {ItemRouter} = require("./routes/ItemRoute");
+const {errorHandler} = require("./middlewares/errorHandler");
+const {logger} = require("./middlewares/logger");
 
 void (async() =>
 {
     try
     {
-        await register(schemasValidations);
+        await mongoose.connect(`${process.env.DB_URL}`, { useNewUrlParser: true });
+        const app = express();
 
-        mongoose.connect(`mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`, { useNewUrlParser: true })
-        .then(() => {
-          const app = new App()
+        app.use(compression());
+        app.use(helmet());
+        app.use(express.json());
+        app.use(express.urlencoded({ extended: true }));
+        app.use(cors());
 
-          app.initConfig()
-          app.build()
-          app.listen()
+        app.use(logger);
+        app.use('/api/items', ItemRouter);
+        app.use(errorHandler);
+
+        app.listen(8085, () => {
+           console.log('Server listening on 8085');
         })
     }
     catch (error)

@@ -1,20 +1,35 @@
 import Item from '../models/itemSchema.js';
+import ItemDao from '../persistence/itemDao.js';
 
 class ItemService
 {
-    async getItem(payload)
+    constructor()
     {
-        return Item.findOne({ _id: payload.id });
+        this.itemDao = new ItemDao();
     }
 
-    async list(payload)
+    async getItem(payload)
     {
-        const { skip, limit } = payload;
-        return (skip && limit) ? Item.find().skip(skip).limit(limit) : [];
+        if (!payload.id)
+        {
+            throw new Error('Error payload.');
+        }
+
+        return this.itemDao.getOne(payload.id);
+    }
+
+    async list()
+    {
+        return this.itemDao.list();
     }
 
     async save(payload)
     {
+        if (!payload.name || !payload.type)
+        {
+            throw new Error('Error payload.');
+        }
+
         const item = new Item();
         item.name = payload.name;
         item.type = payload.type;
@@ -25,6 +40,11 @@ class ItemService
 
     async update(payload)
     {
+        if (!payload.name || !payload.type)
+        {
+            throw new Error('Error payload.');
+        }
+
         const item = await Item.findOne({ _id: payload.id });
 
         item.name = payload?.name ?? item.name;
@@ -36,6 +56,11 @@ class ItemService
 
     async delete(payload)
     {
+        if (!payload.id)
+        {
+            throw new Error('Error payload.');
+        }
+
         return Item.deleteOne({ _id: payload.id });
     }
 }

@@ -1,11 +1,12 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import compression from 'compression';
+import compression from 'express-compression';
 import express from 'express';
 import helmet from 'helmet';
 import mongoose from 'mongoose';
 import cors from 'cors';
+
 import ItemRouter from './routes/ItemRoute.js';
 import errorHandler from './middlewares/errorHandler.js';
 import logger from './middlewares/logger.js';
@@ -17,7 +18,9 @@ void (async() =>
         await mongoose.connect(`${process.env.DB_URL}`);
         const app = express();
 
-        app.use(compression());
+        app.use(compression({
+          brotli: { enable: true, zlib: {} }
+        }));
         app.use(helmet());
         app.use(express.json());
         app.use(express.urlencoded({ extended: true }));

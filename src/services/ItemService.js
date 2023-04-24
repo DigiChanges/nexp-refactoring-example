@@ -1,4 +1,3 @@
-import Item from '../models/itemSchema.js';
 import ItemDao from '../persistence/itemDao.js';
 
 class ItemService
@@ -30,12 +29,7 @@ class ItemService
             throw new Error('Error payload.');
         }
 
-        const item = new Item();
-        item.name = payload.name;
-        item.type = payload.type;
-        await item.save();
-
-        return item;
+        return this.itemDao.create(payload);
     }
 
     async update(payload)
@@ -45,13 +39,7 @@ class ItemService
             throw new Error('Error payload.');
         }
 
-        const item = await Item.findOne({ _id: payload.id });
-
-        item.name = payload?.name ?? item.name;
-        item.type = payload?.type ?? item.type;
-        await item.save();
-
-        return item;
+        return await this.itemDao.update(payload);
     }
 
     async delete(payload)
@@ -61,7 +49,7 @@ class ItemService
             throw new Error('Error payload.');
         }
 
-        return Item.deleteOne({ _id: payload.id });
+        return this.itemDao.delete(payload.id);
     }
 }
 

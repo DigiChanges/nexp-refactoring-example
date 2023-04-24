@@ -13,9 +13,11 @@ class ItemDao
     };
   }
 
-  async update(id, data)
+  async update(payload)
   {
-    const item = await itemSchema.findByIdAndUpdate(id, data);
+    const { id, name, type } = payload;
+
+    const item = await itemSchema.findByIdAndUpdate(id, { name, type }, { new: true });
 
     return {
       id: item._id,

@@ -1,5 +1,11 @@
 import { Router } from 'express';
-import { save, getOne, list, update, remove } from '../controllers/itemController.js';
+import {
+	save,
+	getOne,
+	list,
+	update,
+	remove
+} from '../controllers/itemController.js';
 
 const ItemRouter = new Router();
 

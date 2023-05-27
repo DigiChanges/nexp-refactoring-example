@@ -2,56 +2,77 @@ import itemSchema from '../models/itemSchema.js';
 
 class ItemDao
 {
-  async create(data)
+	async create(data)
   {
-    const item = await itemSchema.create(data);
+		const item = await itemSchema.create(data);
 
-    return {
-      id: item._id,
-      name: item.name,
-      type: item.type
+		return {
+			id: item._id,
+			name: item.name,
+			type: item.type
+		};
+	}
+
+	async update(payload)
+  {
+		const { id, name, type } = payload;
+
+		const item = await itemSchema.findByIdAndUpdate(
+			id,
+			{ name, type },
+			{ new: true }
+		);
+
+    if (!item)
+    {
+      throw new Error('Item not found.');
+    }
+
+		return {
+			id: item._id,
+			name: item.name,
+			type: item.type
+		};
+	}
+
+	async getOne(id)
+  {
+		const item = await itemSchema.findOne({ _id: id }).lean();
+
+    if (!item)
+    {
+      throw new Error('Item not found.');
+    }
+
+		return {
+			id: item._id,
+			name: item.name,
+			type: item.type
+		};
+	}
+
+	async list(limit, page)
+  {
+    const pagination = {
+      limit: limit ?? 10,
+      page: page ?? 1
     };
-  }
 
-  async update(payload)
-  {
-    const { id, name, type } = payload;
+		const items = await itemSchema.paginate({}, pagination);
 
-    const item = await itemSchema.findByIdAndUpdate(id, { name, type }, { new: true });
-
-    return {
-      id: item._id,
-      name: item.name,
-      type: item.type
-    };
-  }
-
-  async getOne(id)
-  {
-    const item = await itemSchema.findOne({ _id: id }).lean();
-
-    return {
-      id: item._id,
-      name: item.name,
-      type: item.type
-    };
-  }
-
-  async list()
-  {
-    const items = await itemSchema.find().lean();
-
-    return items.map(item => ({
-      id: item._id,
-      name: item.name,
-      type: item.type
+    items.docs = items.docs.map(item => ({
+			id: item._id,
+			name: item.name,
+			type: item.type
     }));
-  }
 
-  async delete(id)
+		return items;
+	}
+
+	async delete(id)
   {
-    await itemSchema.findByIdAndRemove(id);
-  }
+		await itemSchema.findByIdAndRemove(id);
+	}
 }
 
 export default ItemDao;

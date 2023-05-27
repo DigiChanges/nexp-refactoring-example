@@ -1,56 +1,71 @@
 import ItemDao from '../persistence/itemDao.js';
+import idValidation from '../validations/idValidation.js';
+import itemCreateValidation from '../validations/itemCreateValidation.js';
+import itemUpdateValidation from '../validations/itemUpdateValidation.js';
+import criteriaValidation from '../validations/criteriaValidation.js';
 
 class ItemService
 {
-    constructor()
+	constructor()
+  {
+		this.itemDao = new ItemDao();
+	}
+
+	async getItem(payload)
+  {
+    await idValidation.parseAsync(payload);
+
+    if (!payload.id)
     {
-        this.itemDao = new ItemDao();
-    }
+			throw new Error('Error payload.');
+		}
 
-    async getItem(payload)
+		return this.itemDao.getOne(payload.id);
+	}
+
+	async list(pagination)
+  {
+    await criteriaValidation.parseAsync(pagination);
+
+    const { limit, page } = pagination;
+		return this.itemDao.list(limit, page);
+	}
+
+	async save(payload)
+  {
+    await itemCreateValidation.parseAsync(payload);
+
+    if (!payload.name || !payload.type)
     {
-        if (!payload.id)
-        {
-            throw new Error('Error payload.');
-        }
+			throw new Error('Error payload.');
+		}
 
-        return this.itemDao.getOne(payload.id);
-    }
+		return this.itemDao.create(payload);
+	}
 
-    async list()
+	async update(payload)
+  {
+    await itemUpdateValidation.parseAsync(payload);
+
+		if (!payload.name || !payload.type)
     {
-        return this.itemDao.list();
-    }
+			throw new Error('Error payload.');
+		}
 
-    async save(payload)
+		return await this.itemDao.update(payload);
+	}
+
+	async delete(payload)
+  {
+    await idValidation.parseAsync(payload);
+
+		if (!payload.id)
     {
-        if (!payload.name || !payload.type)
-        {
-            throw new Error('Error payload.');
-        }
+			throw new Error('Error payload.');
+		}
 
-        return this.itemDao.create(payload);
-    }
-
-    async update(payload)
-    {
-        if (!payload.name || !payload.type)
-        {
-            throw new Error('Error payload.');
-        }
-
-        return await this.itemDao.update(payload);
-    }
-
-    async delete(payload)
-    {
-        if (!payload.id)
-        {
-            throw new Error('Error payload.');
-        }
-
-        return this.itemDao.delete(payload.id);
-    }
+		return this.itemDao.delete(payload.id);
+	}
 }
 
 export default ItemService;
